@@ -1,0 +1,220 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #050816;
+  color: #f9fafb;
+}
+
+.app-root {
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 16px 32px;
+}
+
+.app-header {
+  margin-bottom: 24px;
+}
+
+.app-header-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.app-header-date {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #9ca3af;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.app-header-date .dot {
+  opacity: 0.6;
+}
+
+.app-header-sub {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  background-color: #020617;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.section-description {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.time-selector input[type="range"] {
+  width: 100%;
+}
+
+.time-display {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.time-label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.time-preset-row {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.time-preset-button {
+  flex: 1;
+  min-width: 56px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background-color: #020617;
+  color: #e5e7eb;
+  font-size: 13px;
+}
+
+.time-preset-button--active {
+  border-color: #38bdf8;
+  background: linear-gradient(135deg, #0f172a, #0369a1);
+}
+
+.pack-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pack-card {
+  border-radius: 14px;
+  padding: 12px 12px 10px;
+  background: radial-gradient(circle at top left, #020617, #020617 40%, #0b1120);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.pack-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.pack-chip {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pack-chip--geeknews {
+  border-color: #22c55e;
+  color: #bbf7d0;
+}
+
+.pack-chip--docs {
+  border-color: #38bdf8;
+  color: #bae6fd;
+}
+
+.pack-chip--notion {
+  border-color: #facc15;
+  color: #fef9c3;
+}
+
+.pack-duration {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.pack-title {
+  margin: 0;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pack-summary {
+  margin: 0;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #d1d5db;
+}
+
+.pack-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.pack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pack-tag {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.9);
+  color: #9ca3af;
+}
+
+.pack-button {
+  border-radius: 999px;
+  border: none;
+  padding: 6px 10px;
+  font-size: 13px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #022c22;
+}
+
+@media (min-width: 480px) {
+  .app-root {
+    padding-top: 24px;
+  }
+}
+
