@@ -9,6 +9,7 @@
     "lint": "echo \"No linter configured yet\""
   },
   "dependencies": {
+    "framer-motion": "^12.23.24",
     "lucide-react": "^0.555.0",
     "next": "^14.2.33",
     "react": "^18.2.0",
