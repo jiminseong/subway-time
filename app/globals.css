@@ -238,6 +238,22 @@ input {
   gap: 12px;
 }
 
+.pack-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pack-card-link:hover {
+  transform: translateY(-2px);
+}
+
+.pack-card-link:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
 .pack-card {
   position: relative;
   border-radius: 14px;
@@ -245,6 +261,7 @@ input {
   border: 1px solid var(--border);
   overflow: hidden;
   isolation: isolate;
+  cursor: pointer;
 }
 
 .pack-card::after {

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   Bell,
   CalendarDays,
@@ -207,23 +208,25 @@ export default function HomePage() {
 
                 <div className="pack-grid">
                   {packs.map((pack) => (
-                    <article key={pack.id} className={`pack-card pack-card--${pack.source}`}>
-                      <div className="pack-meta">
-                        <span className="pack-chip">{pack.sourceLabel}</span>
-                        <span className="pack-time">
-                          <Clock4 size={14} aria-hidden /> 예상 {pack.estimatedMinutes}분
-                        </span>
-                      </div>
-                      <h3 className="pack-title">{pack.title}</h3>
-                      <p className="pack-summary">{pack.summary}</p>
-                      <div className="pack-tags">
-                        {pack.tags.map((tag) => (
-                          <span key={tag} className="pack-tag">
-                            #{tag}
+                    <Link key={pack.id} href={`/lecture/${pack.id}`} className="pack-card-link">
+                      <article className={`pack-card pack-card--${pack.source}`}>
+                        <div className="pack-meta">
+                          <span className="pack-chip">{pack.sourceLabel}</span>
+                          <span className="pack-time">
+                            <Clock4 size={14} aria-hidden /> 예상 {pack.estimatedMinutes}분
                           </span>
-                        ))}
-                      </div>
-                    </article>
+                        </div>
+                        <h3 className="pack-title">{pack.title}</h3>
+                        <p className="pack-summary">{pack.summary}</p>
+                        <div className="pack-tags">
+                          {pack.tags.map((tag) => (
+                            <span key={tag} className="pack-tag">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      </article>
+                    </Link>
                   ))}
                 </div>
               </section>
