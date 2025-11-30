@@ -18,8 +18,27 @@ import {
 } from "lucide-react";
 import { type LearningPack } from "../../../lib/learningPacks";
 
+interface ContentSection {
+  type: "section" | "code";
+  title: string;
+  items?: string[];
+  content?: string;
+}
+
+interface LectureContent {
+  id: string;
+  source: string;
+  sourceLabel: string;
+  title: string;
+  summary: string;
+  estimatedMinutes: number;
+  tags: string[];
+  url?: string;
+  content: ContentSection[];
+}
+
 // 더미 데이터에서 실제 학습 내용들
-const LECTURE_CONTENT = {
+const LECTURE_CONTENT: Record<string, LectureContent> = {
   "gn-1": {
     id: "gn-1",
     source: "geeknews",
@@ -193,6 +212,7 @@ function ProductTable({ products, filterText, inStockOnly }) {
     summary: "최근 Notion 업무일지에서 언급된 다국어(i18n) 관련 이슈를 기반으로, 다시 보면 좋을만한 레퍼런스와 체크리스트를 묶어둔 카드입니다. 다음 번 이슈 때 더 빠르게 대응할 수 있도록 돕습니다.",
     estimatedMinutes: 6,
     tags: ["i18n", "업무복습"],
+    url: "https://notion.so/workspace",
     content: [
       {
         type: "section",
@@ -378,13 +398,6 @@ function List<T>({ items, onItemClick, renderItem }: ListProps<T>) {
 
 interface LecturePageProps {
   params: { slug: string };
-}
-
-interface ContentSection {
-  type: "section" | "code";
-  title: string;
-  items?: string[];
-  content?: string;
 }
 
 export default function LecturePage({ params }: LecturePageProps) {
