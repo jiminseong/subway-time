@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import {
   Bell,
@@ -21,7 +22,7 @@ import {
   Target,
   Timer,
   Trash2,
-  Wand2
+  Wand2,
 } from "lucide-react";
 import { generateDummyPacks, type LearningPack } from "../lib/learningPacks";
 
@@ -34,7 +35,7 @@ const QUICK_MINUTES = [20, 25, 30, 35, 40];
 
 const FREQUENT_ROUTES = [
   { id: "home-office", label: "집 → 회사", minutes: 45 },
-  { id: "office-gym", label: "회사 → 헬스장", minutes: 20 }
+  { id: "office-gym", label: "회사 → 헬스장", minutes: 20 },
 ];
 
 const HISTORY = [
@@ -45,8 +46,8 @@ const HISTORY = [
     mood: "집중도 높음",
     items: [
       { title: "JavaScript 비동기 처리 마스터하기", minutes: 25, source: "Docs" },
-      { title: "CSS Flexbox 실전 레이아웃", minutes: 15, source: "Docs" }
-    ]
+      { title: "CSS Flexbox 실전 레이아웃", minutes: 15, source: "Docs" },
+    ],
   },
   {
     id: "oct-25-evening",
@@ -55,9 +56,9 @@ const HISTORY = [
     mood: "출퇴근 지하철",
     items: [
       { title: "React 상태 관리 기초", minutes: 12, source: "GeekNews" },
-      { title: "TypeScript 제네릭 스낵", minutes: 8, source: "Docs" }
-    ]
-  }
+      { title: "TypeScript 제네릭 스낵", minutes: 8, source: "Docs" },
+    ],
+  },
 ];
 
 function clampMinutes(value: number) {
@@ -72,16 +73,16 @@ export default function HomePage() {
   const [draftMinutes, setDraftMinutes] = useState(availableMinutes);
   const [manualTimes, setManualTimes] = useState({
     morning: "45",
-    evening: "65"
+    evening: "65",
   });
   const [locations, setLocations] = useState({
     start: "",
-    destination: ""
+    destination: "",
   });
   const [settingsState, setSettingsState] = useState({
     push: true,
     darkMode: true,
-    reminder: true
+    reminder: true,
   });
 
   const packs = useMemo<LearningPack[]>(() => {
@@ -93,15 +94,13 @@ export default function HomePage() {
     const dateLabel = now.toLocaleDateString("ko-KR", {
       month: "long",
       day: "numeric",
-      weekday: "long"
+      weekday: "long",
     });
     return { dateLabel };
   }, []);
 
   const greeting =
-    availableMinutes >= 35
-      ? "오늘도 즐거운 학습!"
-      : "지금 할 수 있는 만큼만, 꾸준히!";
+    availableMinutes >= 35 ? "오늘도 즐거운 학습!" : "지금 할 수 있는 만큼만, 꾸준히!";
 
   const getManualCandidate = () => {
     const parsed = [manualTimes.morning, manualTimes.evening]
@@ -114,8 +113,7 @@ export default function HomePage() {
 
   const calculateRouteMinutes = () => {
     const base =
-      Math.max(locations.start.trim().length, 3) +
-      Math.max(locations.destination.trim().length, 3);
+      Math.max(locations.start.trim().length, 3) + Math.max(locations.destination.trim().length, 3);
     const estimated = clampMinutes(15 + base * 1.6);
     setDraftMinutes(estimated);
   };
@@ -179,17 +177,14 @@ export default function HomePage() {
                 <div className="time-number">
                   <strong>{availableMinutes}</strong>분
                 </div>
-                <p className="time-caption">
-                  지하철/버스에서 딱 이만큼 집중해봐요.
-                </p>
+                <p className="time-caption">지하철/버스에서 딱 이만큼 집중해봐요.</p>
                 <div className="quick-chips">
                   {QUICK_MINUTES.map((value) => (
                     <button
                       key={value}
                       type="button"
                       className={
-                        "quick-chip" +
-                        (availableMinutes === value ? " quick-chip--active" : "")
+                        "quick-chip" + (availableMinutes === value ? " quick-chip--active" : "")
                       }
                       onClick={() => setAvailableMinutes(value)}
                     >
@@ -212,10 +207,7 @@ export default function HomePage() {
 
                 <div className="pack-grid">
                   {packs.map((pack) => (
-                    <article
-                      key={pack.id}
-                      className={`pack-card pack-card--${pack.source}`}
-                    >
+                    <article key={pack.id} className={`pack-card pack-card--${pack.source}`}>
                       <div className="pack-meta">
                         <span className="pack-chip">{pack.sourceLabel}</span>
                         <span className="pack-time">
@@ -272,8 +264,7 @@ export default function HomePage() {
                           <div>
                             <p className="record-title">{item.title}</p>
                             <p className="record-meta">
-                              <Clock3 size={12} aria-hidden /> {item.minutes}분 ·{" "}
-                              {item.source}
+                              <Clock3 size={12} aria-hidden /> {item.minutes}분 · {item.source}
                             </p>
                           </div>
                           <button className="ghost-button small" type="button">
@@ -311,9 +302,7 @@ export default function HomePage() {
                   <button
                     className={"toggle" + (settingsState.push ? " toggle--on" : "")}
                     type="button"
-                    onClick={() =>
-                      setSettingsState((prev) => ({ ...prev, push: !prev.push }))
-                    }
+                    onClick={() => setSettingsState((prev) => ({ ...prev, push: !prev.push }))}
                     aria-pressed={settingsState.push}
                   >
                     <span />
@@ -325,9 +314,7 @@ export default function HomePage() {
                     <p className="settings-title">
                       <Clock4 size={14} aria-hidden /> 일일 리마인더
                     </p>
-                    <p className="settings-sub">
-                      매일 {availableMinutes}분 학습 목표 리마인드.
-                    </p>
+                    <p className="settings-sub">매일 {availableMinutes}분 학습 목표 리마인드.</p>
                   </div>
                   <button
                     className={"toggle" + (settingsState.reminder ? " toggle--on" : "")}
@@ -335,7 +322,7 @@ export default function HomePage() {
                     onClick={() =>
                       setSettingsState((prev) => ({
                         ...prev,
-                        reminder: !prev.reminder
+                        reminder: !prev.reminder,
                       }))
                     }
                     aria-pressed={settingsState.reminder}
@@ -349,9 +336,7 @@ export default function HomePage() {
                     <p className="settings-title">
                       <Sun size={14} aria-hidden /> 테마
                     </p>
-                    <p className="settings-sub">
-                      어두운 화면에서 눈 피로를 줄여요.
-                    </p>
+                    <p className="settings-sub">어두운 화면에서 눈 피로를 줄여요.</p>
                   </div>
                   <button
                     className={"toggle" + (settingsState.darkMode ? " toggle--on" : "")}
@@ -359,7 +344,7 @@ export default function HomePage() {
                     onClick={() =>
                       setSettingsState((prev) => ({
                         ...prev,
-                        darkMode: !prev.darkMode
+                        darkMode: !prev.darkMode,
                       }))
                     }
                     aria-pressed={settingsState.darkMode}
@@ -389,9 +374,7 @@ export default function HomePage() {
 
         <nav className="bottom-nav">
           <button
-            className={
-              "nav-item" + (activeTab === "home" ? " nav-item--active" : "")
-            }
+            className={"nav-item" + (activeTab === "home" ? " nav-item--active" : "")}
             type="button"
             onClick={() => setActiveTab("home")}
           >
@@ -399,9 +382,7 @@ export default function HomePage() {
             <span className="nav-label">홈</span>
           </button>
           <button
-            className={
-              "nav-item" + (activeTab === "record" ? " nav-item--active" : "")
-            }
+            className={"nav-item" + (activeTab === "record" ? " nav-item--active" : "")}
             type="button"
             onClick={() => setActiveTab("record")}
           >
@@ -409,9 +390,7 @@ export default function HomePage() {
             <span className="nav-label">기록</span>
           </button>
           <button
-            className={
-              "nav-item" + (activeTab === "settings" ? " nav-item--active" : "")
-            }
+            className={"nav-item" + (activeTab === "settings" ? " nav-item--active" : "")}
             type="button"
             onClick={() => setActiveTab("settings")}
           >
@@ -421,209 +400,223 @@ export default function HomePage() {
         </nav>
       </div>
 
-      {sheetOpen && (
-        <div className="sheet-backdrop" role="dialog" aria-modal>
-          <div className="sheet">
-            <header className="sheet-header">
-              <button
-                className="icon-circle"
-                type="button"
-                onClick={() => setSheetOpen(false)}
-                aria-label="이동 시간 설정 닫기"
-              >
-                <ChevronLeft size={16} aria-hidden />
-              </button>
-              <div>
-                <p className="sheet-sub">이동 시간 설정</p>
-                <h3 className="sheet-title">출퇴근 시간을 입력해 주세요</h3>
+      <AnimatePresence>
+        {sheetOpen && (
+          <motion.div
+            className="sheet-backdrop"
+            role="dialog"
+            aria-modal
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            onClick={() => setSheetOpen(false)}
+          >
+            <motion.div
+              className="sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 360, damping: 34 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <header className="sheet-header">
+                <button
+                  className="icon-circle"
+                  type="button"
+                  onClick={() => setSheetOpen(false)}
+                  aria-label="이동 시간 설정 닫기"
+                >
+                  <ChevronLeft size={16} aria-hidden />
+                </button>
+                <div>
+                  <p className="sheet-sub">이동 시간 설정</p>
+                  <h3 className="sheet-title">출퇴근 시간을 입력해 주세요</h3>
+                </div>
+              </header>
+
+              <div className="sheet-tabs">
+                <button
+                  type="button"
+                  className={"sheet-tab" + (timeMode === "manual" ? " sheet-tab--active" : "")}
+                  onClick={() => setTimeMode("manual")}
+                >
+                  이동 시간 직접 입력
+                </button>
+                <button
+                  type="button"
+                  className={"sheet-tab" + (timeMode === "route" ? " sheet-tab--active" : "")}
+                  onClick={() => setTimeMode("route")}
+                >
+                  지도로 시간 계산
+                </button>
               </div>
-            </header>
 
-            <div className="sheet-tabs">
-              <button
-                type="button"
-                className={
-                  "sheet-tab" + (timeMode === "manual" ? " sheet-tab--active" : "")
-                }
-                onClick={() => setTimeMode("manual")}
-              >
-                이동 시간 직접 입력
-              </button>
-              <button
-                type="button"
-                className={
-                  "sheet-tab" + (timeMode === "route" ? " sheet-tab--active" : "")
-                }
-                onClick={() => setTimeMode("route")}
-              >
-                지도에서 소요 시간 계산
-              </button>
-            </div>
-
-            <div className="sheet-content">
-              {timeMode === "manual" ? (
-                <div className="field-stack">
-                  <div className="field">
-                    <label className="field-label">
-                      출근 소요 시간
-                      <span className="field-helper">예: 45분</span>
-                    </label>
-                    <div className="input-shell">
-                      <span className="input-icon" aria-hidden>
-                        <Clock3 size={16} />
-                      </span>
-                      <input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="예: 45분"
-                        value={manualTimes.morning}
-                        onChange={(e) =>
-                          setManualTimes((prev) => ({
-                            ...prev,
-                            morning: e.target.value
-                          }))
-                        }
-                      />
-                      <span className="input-suffix">분</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <label className="field-label">
-                      퇴근 소요 시간
-                      <span className="field-helper">예: 1시간 5분</span>
-                    </label>
-                    <div className="input-shell">
-                      <span className="input-icon" aria-hidden>
-                        <Timer size={16} />
-                      </span>
-                      <input
-                        type="number"
-                        inputMode="numeric"
-                        placeholder="예: 65분"
-                        value={manualTimes.evening}
-                        onChange={(e) =>
-                          setManualTimes((prev) => ({
-                            ...prev,
-                            evening: e.target.value
-                          }))
-                        }
-                      />
-                      <span className="input-suffix">분</span>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <p className="field-label">자주 쓰는 시간</p>
-                    <div className="quick-chips">
-                      {QUICK_MINUTES.map((value) => (
-                        <button
-                          key={value}
-                          type="button"
-                          className={
-                            "quick-chip quick-chip--ghost" +
-                            (draftMinutes === value ? " quick-chip--active" : "")
+              <div className="sheet-content">
+                {timeMode === "manual" ? (
+                  <div className="field-stack">
+                    <div className="field">
+                      <label className="field-label">
+                        출근 소요 시간
+                        <span className="field-helper">예: 45분</span>
+                      </label>
+                      <div className="input-shell">
+                        <span className="input-icon" aria-hidden>
+                          <Clock3 size={16} />
+                        </span>
+                        <input
+                          type="number"
+                          inputMode="numeric"
+                          placeholder="예: 45분"
+                          value={manualTimes.morning}
+                          onChange={(e) =>
+                            setManualTimes((prev) => ({
+                              ...prev,
+                              morning: e.target.value,
+                            }))
                           }
-                          onClick={() => setDraftMinutes(value)}
-                        >
-                          {value}분
-                        </button>
-                      ))}
+                        />
+                        <span className="input-suffix">분</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <p className="sheet-hint">
-                    선택된 이동 시간: <strong>{draftMinutes}분</strong>
-                  </p>
-                </div>
-              ) : (
-                <div className="field-stack">
-                  <div className="field">
-                    <label className="field-label">출발 위치</label>
-                    <div className="input-shell">
-                      <span className="input-icon" aria-hidden>
-                        <MapPin size={16} />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="현재 위치"
-                        value={locations.start}
-                        onChange={(e) =>
-                          setLocations((prev) => ({
-                            ...prev,
-                            start: e.target.value
-                          }))
-                        }
-                      />
+                    <div className="field">
+                      <label className="field-label">
+                        퇴근 소요 시간
+                        <span className="field-helper">예: 1시간 5분</span>
+                      </label>
+                      <div className="input-shell">
+                        <span className="input-icon" aria-hidden>
+                          <Timer size={16} />
+                        </span>
+                        <input
+                          type="number"
+                          inputMode="numeric"
+                          placeholder="예: 65분"
+                          value={manualTimes.evening}
+                          onChange={(e) =>
+                            setManualTimes((prev) => ({
+                              ...prev,
+                              evening: e.target.value,
+                            }))
+                          }
+                        />
+                        <span className="input-suffix">분</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="field">
-                    <label className="field-label">목적지</label>
-                    <div className="input-shell">
-                      <span className="input-icon" aria-hidden>
-                        <Target size={16} />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="목적지 입력"
-                        value={locations.destination}
-                        onChange={(e) =>
-                          setLocations((prev) => ({
-                            ...prev,
-                            destination: e.target.value
-                          }))
-                        }
-                      />
+                    <div className="field">
+                      <p className="field-label">자주 쓰는 시간</p>
+                      <div className="quick-chips">
+                        {QUICK_MINUTES.map((value) => (
+                          <button
+                            key={value}
+                            type="button"
+                            className={
+                              "quick-chip quick-chip--ghost" +
+                              (draftMinutes === value ? " quick-chip--active" : "")
+                            }
+                            onClick={() => setDraftMinutes(value)}
+                          >
+                            {value}분
+                          </button>
+                        ))}
+                      </div>
                     </div>
+
+                    <p className="sheet-hint">
+                      선택된 이동 시간: <strong>{draftMinutes}분</strong>
+                    </p>
                   </div>
-
-                  <button
-                    type="button"
-                    className="primary-button"
-                    onClick={calculateRouteMinutes}
-                  >
-                    소요 시간 계산
-                  </button>
-
-                  <div className="field">
-                    <p className="field-label">자주 가는 경로</p>
-                    <div className="route-list">
-                      {FREQUENT_ROUTES.map((route) => (
-                        <button
-                          key={route.id}
-                          type="button"
-                          className="route-card"
-                          onClick={() => setDraftMinutes(route.minutes)}
-                        >
-                          <div>
-                            <p className="route-label">{route.label}</p>
-                            <p className="route-minutes">{route.minutes}분</p>
-                          </div>
-                          <div className="route-actions" aria-hidden>
-                            <Pencil size={14} />
-                            <Trash2 size={14} />
-                          </div>
-                        </button>
-                      ))}
+                ) : (
+                  <div className="field-stack">
+                    <div className="field">
+                      <label className="field-label">출발 위치</label>
+                      <div className="input-shell">
+                        <span className="input-icon" aria-hidden>
+                          <MapPin size={16} />
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="현재 위치"
+                          value={locations.start}
+                          onChange={(e) =>
+                            setLocations((prev) => ({
+                              ...prev,
+                              start: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
                     </div>
+
+                    <div className="field">
+                      <label className="field-label">목적지</label>
+                      <div className="input-shell">
+                        <span className="input-icon" aria-hidden>
+                          <Target size={16} />
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="목적지 입력"
+                          value={locations.destination}
+                          onChange={(e) =>
+                            setLocations((prev) => ({
+                              ...prev,
+                              destination: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="primary-button"
+                      onClick={calculateRouteMinutes}
+                    >
+                      소요 시간 계산
+                    </button>
+
+                    <div className="field">
+                      <p className="field-label">자주 가는 경로</p>
+                      <div className="route-list">
+                        {FREQUENT_ROUTES.map((route) => (
+                          <button
+                            key={route.id}
+                            type="button"
+                            className="route-card"
+                            onClick={() => setDraftMinutes(route.minutes)}
+                          >
+                            <div>
+                              <p className="route-label">{route.label}</p>
+                              <p className="route-minutes">{route.minutes}분</p>
+                            </div>
+                            <div className="route-actions" aria-hidden>
+                              <Pencil size={14} />
+                              <Trash2 size={14} />
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <p className="sheet-hint">
+                      예상 이동 시간: <strong>{draftMinutes}분</strong>
+                    </p>
                   </div>
+                )}
+              </div>
 
-                  <p className="sheet-hint">
-                    예상 이동 시간: <strong>{draftMinutes}분</strong>
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="sheet-footer">
-              <button type="button" className="primary-button" onClick={handleSaveSheet}>
-                저장하기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+              <div className="sheet-footer">
+                <button type="button" className="primary-button" onClick={handleSaveSheet}>
+                  저장하기
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

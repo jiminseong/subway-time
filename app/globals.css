@@ -366,10 +366,11 @@ input {
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 16px;
+  padding: 0;
   z-index: 20;
+  backdrop-filter: blur(6px);
 }
 
 .sheet {
@@ -382,6 +383,9 @@ input {
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(10px);
+  box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.45);
+  margin: 0 10px 12px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0));
 }
 
 .sheet-header {
