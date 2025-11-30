@@ -9,7 +9,7 @@
     "lint": "echo \"No linter configured yet\""
   },
   "dependencies": {
-    "next": "14.2.0",
+    "next": "^14.2.33",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -20,4 +20,3 @@
     "typescript": "^5.6.2"
   }
 }
-
