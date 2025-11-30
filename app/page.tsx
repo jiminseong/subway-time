@@ -2,11 +2,31 @@
 
 import { useMemo, useState } from "react";
 import {
-  generateDummyPacks,
-  type LearningPack
-} from "../lib/learningPacks";
+  Bell,
+  CalendarDays,
+  ChevronLeft,
+  Clock3,
+  Clock4,
+  Edit3,
+  History,
+  Home,
+  Info,
+  MapPin,
+  NotebookPen,
+  Pencil,
+  RefreshCcw,
+  Search,
+  Settings,
+  Sun,
+  Target,
+  Timer,
+  Trash2,
+  Wand2
+} from "lucide-react";
+import { generateDummyPacks, type LearningPack } from "../lib/learningPacks";
 
 type TimeMode = "manual" | "route";
+type Tab = "home" | "record" | "settings";
 
 const MIN_MINUTES = 10;
 const MAX_MINUTES = 90;
@@ -17,11 +37,35 @@ const FREQUENT_ROUTES = [
   { id: "office-gym", label: "회사 → 헬스장", minutes: 20 }
 ];
 
+const HISTORY = [
+  {
+    id: "oct-26-morning",
+    date: "10월 26일 토요일",
+    minutes: 35,
+    mood: "집중도 높음",
+    items: [
+      { title: "JavaScript 비동기 처리 마스터하기", minutes: 25, source: "Docs" },
+      { title: "CSS Flexbox 실전 레이아웃", minutes: 15, source: "Docs" }
+    ]
+  },
+  {
+    id: "oct-25-evening",
+    date: "10월 25일 금요일",
+    minutes: 20,
+    mood: "출퇴근 지하철",
+    items: [
+      { title: "React 상태 관리 기초", minutes: 12, source: "GeekNews" },
+      { title: "TypeScript 제네릭 스낵", minutes: 8, source: "Docs" }
+    ]
+  }
+];
+
 function clampMinutes(value: number) {
   return Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, Math.round(value)));
 }
 
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState<Tab>("home");
   const [availableMinutes, setAvailableMinutes] = useState(35);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [timeMode, setTimeMode] = useState<TimeMode>("manual");
@@ -33,6 +77,11 @@ export default function HomePage() {
   const [locations, setLocations] = useState({
     start: "",
     destination: ""
+  });
+  const [settingsState, setSettingsState] = useState({
+    push: true,
+    darkMode: true,
+    reminder: true
   });
 
   const packs = useMemo<LearningPack[]>(() => {
@@ -95,106 +144,278 @@ export default function HomePage() {
     <div className="page">
       <div className="app-shell">
         <div className="app-screen">
-          <header className="top-bar">
-            <div>
-              <div className="date-chip">{today.dateLabel}</div>
-              <h1 className="greeting">{greeting}</h1>
-            </div>
-            <button className="icon-button" aria-label="설정 열기">
-              <span aria-hidden>⚙️</span>
-            </button>
-          </header>
-
-          <section className="time-banner">
-            <div className="time-banner-row">
-              <div className="time-badge">
-                <span className="icon-circle icon-circle--muted" aria-hidden>
-                  ⏱
-                </span>
-                <span>현재 이동 시간</span>
-              </div>
-              <button className="ghost-button" type="button" onClick={openSheet}>
-                시간 변경
-              </button>
-            </div>
-            <div className="time-number">
-              <strong>{availableMinutes}</strong>분
-            </div>
-            <p className="time-caption">
-              지하철/버스에서 딱 이만큼 집중해봐요.
-            </p>
-            <div className="quick-chips">
-              {QUICK_MINUTES.map((value) => (
+          {activeTab === "home" && (
+            <>
+              <header className="top-bar">
+                <div>
+                  <div className="date-chip">
+                    <CalendarDays size={16} aria-hidden />
+                    <span>{today.dateLabel}</span>
+                  </div>
+                  <h1 className="greeting">{greeting}</h1>
+                </div>
                 <button
-                  key={value}
-                  type="button"
-                  className={
-                    "quick-chip" +
-                    (availableMinutes === value ? " quick-chip--active" : "")
-                  }
-                  onClick={() => setAvailableMinutes(value)}
+                  className="icon-button"
+                  aria-label="설정 열기"
+                  onClick={() => setActiveTab("settings")}
                 >
-                  {value}분
+                  <Settings size={18} aria-hidden />
                 </button>
-              ))}
-            </div>
-          </section>
+              </header>
 
-          <section className="section">
-            <div className="section-header">
-              <div>
-                <p className="section-eyebrow">오늘의 추천 학습팩</p>
-                <h2 className="section-title">지금 시간에 딱 맞는 카드들</h2>
-                <p className="section-description">
-                  {availableMinutes}분 안에 끝낼 수 있는 콘텐츠만 골랐어요.
+              <section className="time-banner">
+                <div className="time-banner-row">
+                  <div className="time-badge">
+                    <span className="icon-circle icon-circle--muted" aria-hidden>
+                      <Timer size={16} />
+                    </span>
+                    <span>현재 이동 시간</span>
+                  </div>
+                  <button className="ghost-button" type="button" onClick={openSheet}>
+                    <Wand2 size={16} aria-hidden />
+                    <span>시간 변경</span>
+                  </button>
+                </div>
+                <div className="time-number">
+                  <strong>{availableMinutes}</strong>분
+                </div>
+                <p className="time-caption">
+                  지하철/버스에서 딱 이만큼 집중해봐요.
                 </p>
+                <div className="quick-chips">
+                  {QUICK_MINUTES.map((value) => (
+                    <button
+                      key={value}
+                      type="button"
+                      className={
+                        "quick-chip" +
+                        (availableMinutes === value ? " quick-chip--active" : "")
+                      }
+                      onClick={() => setAvailableMinutes(value)}
+                    >
+                      {value}분
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className="section">
+                <div className="section-header">
+                  <div>
+                    <p className="section-eyebrow">오늘의 추천 학습팩</p>
+                    <h2 className="section-title">지금 시간에 딱 맞는 카드들</h2>
+                    <p className="section-description">
+                      {availableMinutes}분 안에 끝낼 수 있는 콘텐츠만 골랐어요.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pack-grid">
+                  {packs.map((pack) => (
+                    <article
+                      key={pack.id}
+                      className={`pack-card pack-card--${pack.source}`}
+                    >
+                      <div className="pack-meta">
+                        <span className="pack-chip">{pack.sourceLabel}</span>
+                        <span className="pack-time">
+                          <Clock4 size={14} aria-hidden /> 예상 {pack.estimatedMinutes}분
+                        </span>
+                      </div>
+                      <h3 className="pack-title">{pack.title}</h3>
+                      <p className="pack-summary">{pack.summary}</p>
+                      <div className="pack-tags">
+                        {pack.tags.map((tag) => (
+                          <span key={tag} className="pack-tag">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
+
+          {activeTab === "record" && (
+            <div className="record-screen">
+              <header className="top-bar">
+                <div>
+                  <div className="date-chip">
+                    <History size={16} aria-hidden />
+                    <span>기록</span>
+                  </div>
+                  <h1 className="greeting">최근 학습을 돌아봐요</h1>
+                </div>
+                <button className="icon-button" aria-label="새로고침">
+                  <RefreshCcw size={18} aria-hidden />
+                </button>
+              </header>
+
+              <div className="record-list">
+                {HISTORY.map((entry) => (
+                  <article key={entry.id} className="record-card">
+                    <div className="record-head">
+                      <div>
+                        <p className="record-date">{entry.date}</p>
+                        <div className="record-pill">
+                          <Timer size={14} aria-hidden />
+                          <span>{entry.minutes}분 학습</span>
+                        </div>
+                      </div>
+                      <span className="record-mood">{entry.mood}</span>
+                    </div>
+                    <div className="record-items">
+                      {entry.items.map((item, idx) => (
+                        <div key={item.title + idx} className="record-item">
+                          <div>
+                            <p className="record-title">{item.title}</p>
+                            <p className="record-meta">
+                              <Clock3 size={12} aria-hidden /> {item.minutes}분 ·{" "}
+                              {item.source}
+                            </p>
+                          </div>
+                          <button className="ghost-button small" type="button">
+                            <Edit3 size={14} aria-hidden /> 메모
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
+          )}
 
-            <div className="pack-grid">
-              {packs.map((pack) => (
-                <article
-                  key={pack.id}
-                  className={`pack-card pack-card--${pack.source}`}
-                >
-                  <div className="pack-meta">
-                    <span className="pack-chip">{pack.sourceLabel}</span>
-                    <span className="pack-time">
-                      예상 {pack.estimatedMinutes}분
-                    </span>
+          {activeTab === "settings" && (
+            <div className="settings-screen">
+              <header className="top-bar">
+                <div>
+                  <div className="date-chip">
+                    <Settings size={16} aria-hidden />
+                    <span>설정</span>
                   </div>
-                  <h3 className="pack-title">{pack.title}</h3>
-                  <p className="pack-summary">{pack.summary}</p>
-                  <div className="pack-tags">
-                    {pack.tags.map((tag) => (
-                      <span key={tag} className="pack-tag">
-                        #{tag}
-                      </span>
-                    ))}
+                  <h1 className="greeting">내 학습 루틴 맞춤 설정</h1>
+                </div>
+              </header>
+
+              <div className="settings-panel">
+                <div className="settings-row">
+                  <div>
+                    <p className="settings-title">
+                      <Bell size={14} aria-hidden /> 알림
+                    </p>
+                    <p className="settings-sub">매일 아침 학습팩 알림을 받아요.</p>
                   </div>
-                </article>
-              ))}
+                  <button
+                    className={"toggle" + (settingsState.push ? " toggle--on" : "")}
+                    type="button"
+                    onClick={() =>
+                      setSettingsState((prev) => ({ ...prev, push: !prev.push }))
+                    }
+                    aria-pressed={settingsState.push}
+                  >
+                    <span />
+                  </button>
+                </div>
+
+                <div className="settings-row">
+                  <div>
+                    <p className="settings-title">
+                      <Clock4 size={14} aria-hidden /> 일일 리마인더
+                    </p>
+                    <p className="settings-sub">
+                      매일 {availableMinutes}분 학습 목표 리마인드.
+                    </p>
+                  </div>
+                  <button
+                    className={"toggle" + (settingsState.reminder ? " toggle--on" : "")}
+                    type="button"
+                    onClick={() =>
+                      setSettingsState((prev) => ({
+                        ...prev,
+                        reminder: !prev.reminder
+                      }))
+                    }
+                    aria-pressed={settingsState.reminder}
+                  >
+                    <span />
+                  </button>
+                </div>
+
+                <div className="settings-row">
+                  <div>
+                    <p className="settings-title">
+                      <Sun size={14} aria-hidden /> 테마
+                    </p>
+                    <p className="settings-sub">
+                      어두운 화면에서 눈 피로를 줄여요.
+                    </p>
+                  </div>
+                  <button
+                    className={"toggle" + (settingsState.darkMode ? " toggle--on" : "")}
+                    type="button"
+                    onClick={() =>
+                      setSettingsState((prev) => ({
+                        ...prev,
+                        darkMode: !prev.darkMode
+                      }))
+                    }
+                    aria-pressed={settingsState.darkMode}
+                  >
+                    <span />
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-panel">
+                <button className="settings-action" type="button">
+                  <NotebookPen size={16} aria-hidden />
+                  최근 업무 로그 연동
+                </button>
+                <button className="settings-action" type="button">
+                  <Search size={16} aria-hidden />
+                  GeekNews 즐겨찾기 관리
+                </button>
+                <button className="settings-action" type="button">
+                  <Info size={16} aria-hidden />
+                  도움말 및 피드백
+                </button>
+              </div>
             </div>
-          </section>
+          )}
         </div>
 
         <nav className="bottom-nav">
-          <button className="nav-item nav-item--active" type="button">
-            <span className="nav-icon" aria-hidden>
-              ⌂
-            </span>
+          <button
+            className={
+              "nav-item" + (activeTab === "home" ? " nav-item--active" : "")
+            }
+            type="button"
+            onClick={() => setActiveTab("home")}
+          >
+            <Home size={16} aria-hidden className="nav-icon" />
             <span className="nav-label">홈</span>
           </button>
-          <button className="nav-item" type="button">
-            <span className="nav-icon" aria-hidden>
-              ⟳
-            </span>
+          <button
+            className={
+              "nav-item" + (activeTab === "record" ? " nav-item--active" : "")
+            }
+            type="button"
+            onClick={() => setActiveTab("record")}
+          >
+            <History size={16} aria-hidden className="nav-icon" />
             <span className="nav-label">기록</span>
           </button>
-          <button className="nav-item" type="button">
-            <span className="nav-icon" aria-hidden>
-              ⚙️
-            </span>
+          <button
+            className={
+              "nav-item" + (activeTab === "settings" ? " nav-item--active" : "")
+            }
+            type="button"
+            onClick={() => setActiveTab("settings")}
+          >
+            <Settings size={16} aria-hidden className="nav-icon" />
             <span className="nav-label">설정</span>
           </button>
         </nav>
@@ -210,7 +431,7 @@ export default function HomePage() {
                 onClick={() => setSheetOpen(false)}
                 aria-label="이동 시간 설정 닫기"
               >
-                ←
+                <ChevronLeft size={16} aria-hidden />
               </button>
               <div>
                 <p className="sheet-sub">이동 시간 설정</p>
@@ -249,7 +470,7 @@ export default function HomePage() {
                     </label>
                     <div className="input-shell">
                       <span className="input-icon" aria-hidden>
-                        ⏳
+                        <Clock3 size={16} />
                       </span>
                       <input
                         type="number"
@@ -274,7 +495,7 @@ export default function HomePage() {
                     </label>
                     <div className="input-shell">
                       <span className="input-icon" aria-hidden>
-                        🕑
+                        <Timer size={16} />
                       </span>
                       <input
                         type="number"
@@ -321,7 +542,7 @@ export default function HomePage() {
                     <label className="field-label">출발 위치</label>
                     <div className="input-shell">
                       <span className="input-icon" aria-hidden>
-                        📍
+                        <MapPin size={16} />
                       </span>
                       <input
                         type="text"
@@ -341,7 +562,7 @@ export default function HomePage() {
                     <label className="field-label">목적지</label>
                     <div className="input-shell">
                       <span className="input-icon" aria-hidden>
-                        🎯
+                        <Target size={16} />
                       </span>
                       <input
                         type="text"
@@ -380,8 +601,8 @@ export default function HomePage() {
                             <p className="route-minutes">{route.minutes}분</p>
                           </div>
                           <div className="route-actions" aria-hidden>
-                            <span>✏️</span>
-                            <span>🗑️</span>
+                            <Pencil size={14} />
+                            <Trash2 size={14} />
                           </div>
                         </button>
                       ))}
