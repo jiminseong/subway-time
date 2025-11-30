@@ -1,6 +1,3 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/learning-packs/route": "app/api/learning-packs/route.js",
-  "/page": "app/page.js",
-  "/lecture/[slug]/page": "app/lecture/[slug]/page.js"
+  "/page": "app/page.js"
 }

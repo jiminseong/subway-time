@@ -85,6 +85,8 @@ export default function HomePage() {
     darkMode: true,
     reminder: true,
   });
+  const [notionPageId, setNotionPageId] = useState("");
+  const [isLoadingNotion, setIsLoadingNotion] = useState(false);
 
   const packs = useMemo<LearningPack[]>(() => {
     return generateDummyPacks(availableMinutes);
@@ -358,10 +360,54 @@ export default function HomePage() {
               </div>
 
               <div className="settings-panel">
-                <button className="settings-action" type="button">
-                  <NotebookPen size={16} aria-hidden />
-                  최근 업무 로그 연동
-                </button>
+                <div className="settings-row">
+                  <div className="settings-notion">
+                    <p className="settings-title">
+                      <NotebookPen size={14} aria-hidden /> Notion 연동
+                    </p>
+                    <p className="settings-sub">Notion 페이지 ID를 입력하여 학습 자료로 가져오세요.</p>
+                    <div className="notion-input-group">
+                      <input
+                        type="text"
+                        placeholder="Notion 페이지 ID 입력"
+                        value={notionPageId}
+                        onChange={(e) => setNotionPageId(e.target.value)}
+                        className="notion-input"
+                      />
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!notionPageId.trim()) return;
+                          setIsLoadingNotion(true);
+                          try {
+                            const response = await fetch(`/api/notion?pageId=${notionPageId.trim()}`);
+                            if (response.ok) {
+                              const data = await response.json();
+                              alert(`성공적으로 가져왔습니다: ${data.title}`);
+                            } else {
+                              alert('페이지를 가져올 수 없습니다. 페이지 ID와 권한을 확인해주세요.');
+                            }
+                          } catch (error) {
+                            alert('연결 중 오류가 발생했습니다.');
+                          } finally {
+                            setIsLoadingNotion(false);
+                          }
+                        }}
+                        disabled={!notionPageId.trim() || isLoadingNotion}
+                        className={`notion-test-btn ${isLoadingNotion ? 'loading' : ''}`}
+                      >
+                        {isLoadingNotion ? '연결 중...' : '테스트'}
+                      </button>
+                    </div>
+                    <p className="settings-help">
+                      💡 Notion 페이지 URL에서 마지막 32자리 ID를 복사하세요.
+                      <br />예: notion.so/workspace/페이지이름-<strong>32자리ID</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="settings-panel">
                 <button className="settings-action" type="button">
                   <Search size={16} aria-hidden />
                   GeekNews 즐겨찾기 관리

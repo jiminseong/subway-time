@@ -713,6 +713,75 @@ input {
 }
 
 .toggle--on span {
+  background: var(--primary);
+}
+
+/* Notion 연동 스타일 */
+.settings-notion {
+  width: 100%;
+}
+
+.notion-input-group {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.notion-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.notion-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(92, 165, 255, 0.1);
+}
+
+.notion-input::placeholder {
+  color: var(--muted);
+}
+
+.notion-test-btn {
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.notion-test-btn:hover:not(:disabled) {
+  background: var(--primary-strong);
+}
+
+.notion-test-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.notion-test-btn.loading {
+  background: var(--muted);
+}
+
+.settings-help {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.settings-help strong {
+  color: var(--primary);
   background: #5ca5ff;
 }
 

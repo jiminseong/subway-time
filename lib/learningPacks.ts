@@ -81,3 +81,51 @@ export function generateDummyPacks(
   return result;
 }
 
+// Notion API로부터 학습 팩 생성
+export async function fetchNotionLearningPack(pageId: string): Promise<LearningPack | null> {
+  try {
+    const response = await fetch(`/api/notion?pageId=${pageId}`);
+    
+    if (!response.ok) {
+      console.error('Failed to fetch Notion data:', response.statusText);
+      return null;
+    }
+
+    const notionData = await response.json();
+    
+    // Notion 데이터를 LearningPack 형태로 변환
+    const learningPack: LearningPack = {
+      id: `notion-${pageId}`,
+      source: "notion",
+      sourceLabel: "Notion",
+      title: notionData.title,
+      summary: notionData.summary,
+      estimatedMinutes: notionData.estimatedMinutes,
+      tags: notionData.tags,
+      url: notionData.url
+    };
+
+    return learningPack;
+  } catch (error) {
+    console.error('Error fetching Notion learning pack:', error);
+    return null;
+  }
+}
+
+// 여러 Notion 페이지를 동시에 가져오기
+export async function fetchMultipleNotionPacks(pageIds: string[]): Promise<LearningPack[]> {
+  try {
+    const promises = pageIds.map(pageId => fetchNotionLearningPack(pageId));
+    const results = await Promise.allSettled(promises);
+    
+    return results
+      .filter((result): result is PromiseFulfilledResult<LearningPack | null> => 
+        result.status === 'fulfilled' && result.value !== null
+      )
+      .map(result => result.value as LearningPack);
+  } catch (error) {
+    console.error('Error fetching multiple Notion packs:', error);
+    return [];
+  }
+}
+
