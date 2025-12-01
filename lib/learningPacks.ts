@@ -129,3 +129,126 @@ export async function fetchMultipleNotionPacks(pageIds: string[]): Promise<Learn
   }
 }
 
+// 경로 기반 학습 팩 생성 (교통 시간에 맞춘 학습 자료)
+export interface RouteInfo {
+  origin: string;
+  destination: string;
+  minutes: number;
+  mode: 'transit' | 'driving' | 'walking';
+}
+
+export async function generateRouteBasedPacks(
+  routeInfo: RouteInfo,
+  includeNotionPages?: string[]
+): Promise<LearningPack[]> {
+  try {
+    // 기본 더미 팩들 중에서 적절한 시간의 것들 선택
+    const basePacks = generateDummyPacks(routeInfo.minutes);
+    
+    // Notion 페이지들이 있다면 추가
+    let notionPacks: LearningPack[] = [];
+    if (includeNotionPages && includeNotionPages.length > 0) {
+      notionPacks = await fetchMultipleNotionPacks(includeNotionPages);
+    }
+    
+    // 모든 팩 합치기
+    const allPacks = [...basePacks, ...notionPacks];
+    
+    // 경로 시간에 맞게 필터링
+    const result: LearningPack[] = [];
+    let usedMinutes = 0;
+    
+    // 시간 효율성 순으로 정렬 (분당 학습 효과)
+    const sortedPacks = allPacks.sort((a, b) => {
+      const efficiencyA = calculateLearningEfficiency(a);
+      const efficiencyB = calculateLearningEfficiency(b);
+      return efficiencyB - efficiencyA;
+    });
+    
+    for (const pack of sortedPacks) {
+      if (usedMinutes + pack.estimatedMinutes <= routeInfo.minutes) {
+        result.push(pack);
+        usedMinutes += pack.estimatedMinutes;
+      }
+    }
+    
+    // 최소 하나는 포함되도록
+    if (result.length === 0 && allPacks.length > 0) {
+      result.push(allPacks[0]);
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error generating route-based packs:', error);
+    return generateDummyPacks(routeInfo.minutes);
+  }
+}
+
+// 학습 효율성 계산 (간단한 휴리스틱)
+function calculateLearningEfficiency(pack: LearningPack): number {
+  const baseScore = 1.0;
+  
+  // 태그 기반 보너스
+  let tagBonus = 0;
+  if (pack.tags.includes('업무연결')) tagBonus += 0.3;
+  if (pack.tags.includes('기초다지기')) tagBonus += 0.2;
+  if (pack.tags.includes('공식문서')) tagBonus += 0.2;
+  
+  // 소요 시간 기반 효율성 (너무 짧지도 길지도 않은 것이 좋음)
+  let timeBonus = 0;
+  if (pack.estimatedMinutes >= 5 && pack.estimatedMinutes <= 15) {
+    timeBonus = 0.2;
+  } else if (pack.estimatedMinutes >= 16 && pack.estimatedMinutes <= 25) {
+    timeBonus = 0.1;
+  }
+  
+  return baseScore + tagBonus + timeBonus;
+}
+
+// 저장된 경로 관리
+export interface SavedRoute {
+  id: string;
+  label: string;
+  origin: string;
+  destination: string;
+  lastCalculatedMinutes: number;
+  lastUpdated: string;
+}
+
+export function saveRoute(route: SavedRoute): void {
+  try {
+    const saved = getSavedRoutes();
+    const existing = saved.findIndex(r => r.id === route.id);
+    
+    if (existing >= 0) {
+      saved[existing] = route;
+    } else {
+      saved.push(route);
+    }
+    
+    localStorage.setItem('subway-time-saved-routes', JSON.stringify(saved));
+  } catch (error) {
+    console.error('Error saving route:', error);
+  }
+}
+
+export function getSavedRoutes(): SavedRoute[] {
+  try {
+    const saved = localStorage.getItem('subway-time-saved-routes');
+    return saved ? JSON.parse(saved) : [];
+  } catch (error) {
+    console.error('Error loading saved routes:', error);
+    return [];
+  }
+}
+
+export function deleteRoute(routeId: string): void {
+  try {
+    const saved = getSavedRoutes();
+    const filtered = saved.filter(r => r.id !== routeId);
+    localStorage.setItem('subway-time-saved-routes', JSON.stringify(filtered));
+  } catch (error) {
+    console.error('Error deleting route:', error);
+  }
+}
+

@@ -87,6 +87,8 @@ export default function HomePage() {
   });
   const [notionPageId, setNotionPageId] = useState("");
   const [isLoadingNotion, setIsLoadingNotion] = useState(false);
+  const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
+  const [routeError, setRouteError] = useState("");
 
   const packs = useMemo<LearningPack[]>(() => {
     return generateDummyPacks(availableMinutes);
@@ -105,6 +107,35 @@ export default function HomePage() {
   const greeting =
     availableMinutes >= 35 ? "오늘도 즐거운 학습!" : "지금 할 수 있는 만큼만, 꾸준히!";
 
+  // 실시간 경로 시간 계산
+  const calculateRealRouteTime = async (origin: string, destination: string) => {
+    if (!origin.trim() || !destination.trim()) {
+      setRouteError("출발지와 도착지를 입력해주세요.");
+      return null;
+    }
+
+    setIsCalculatingRoute(true);
+    setRouteError("");
+
+    try {
+      const response = await fetch(
+        `/api/route-time?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=transit`
+      );
+
+      if (!response.ok) {
+        throw new Error('경로 검색 실패');
+      }
+
+      const routeData = await response.json();
+      return routeData.duration.minutes;
+    } catch (error) {
+      setRouteError("경로를 찾을 수 없습니다. 다시 시도해주세요.");
+      return null;
+    } finally {
+      setIsCalculatingRoute(false);
+    }
+  };
+
   const getManualCandidate = () => {
     const parsed = [manualTimes.morning, manualTimes.evening]
       .map((value) => Number(value))
@@ -114,11 +145,26 @@ export default function HomePage() {
     return clampMinutes(parsed[0]);
   };
 
-  const calculateRouteMinutes = () => {
-    const base =
-      Math.max(locations.start.trim().length, 3) + Math.max(locations.destination.trim().length, 3);
-    const estimated = clampMinutes(15 + base * 1.6);
-    setDraftMinutes(estimated);
+  const calculateRouteMinutes = async () => {
+    // 입력값이 없으면 기존 로직 사용
+    if (!locations.start.trim() || !locations.destination.trim()) {
+      setRouteError("출발지와 도착지를 입력해주세요.");
+      return;
+    }
+
+    // 실제 API로 경로 시간 계산
+    const realMinutes = await calculateRealRouteTime(locations.start, locations.destination);
+    
+    if (realMinutes !== null) {
+      setDraftMinutes(realMinutes);
+      setRouteError(""); // 성공 시 에러 메시지 초기화
+    } else {
+      // API 실패 시 기존 추정 로직 사용
+      const base =
+        Math.max(locations.start.trim().length, 3) + Math.max(locations.destination.trim().length, 3);
+      const estimated = clampMinutes(15 + base * 1.6);
+      setDraftMinutes(estimated);
+    }
   };
 
   const openSheet = () => {
@@ -621,11 +667,18 @@ export default function HomePage() {
 
                     <button
                       type="button"
-                      className="primary-button"
+                      className={`primary-button ${isCalculatingRoute ? 'loading' : ''}`}
                       onClick={calculateRouteMinutes}
+                      disabled={isCalculatingRoute}
                     >
-                      소요 시간 계산
+                      {isCalculatingRoute ? '계산 중...' : '소요 시간 계산'}
                     </button>
+
+                    {routeError && (
+                      <div className="route-error">
+                        <span>⚠️ {routeError}</span>
+                      </div>
+                    )}
 
                     <div className="field">
                       <p className="field-label">자주 가는 경로</p>
