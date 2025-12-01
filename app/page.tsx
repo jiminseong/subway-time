@@ -119,11 +119,13 @@ export default function HomePage() {
 
     try {
       const response = await fetch(
-        `/api/route-time?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&mode=transit`
+        `/api/route-time?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(
+          destination
+        )}&mode=transit`
       );
 
       if (!response.ok) {
-        throw new Error('경로 검색 실패');
+        throw new Error("경로 검색 실패");
       }
 
       const routeData = await response.json();
@@ -154,14 +156,15 @@ export default function HomePage() {
 
     // 실제 API로 경로 시간 계산
     const realMinutes = await calculateRealRouteTime(locations.start, locations.destination);
-    
+
     if (realMinutes !== null) {
       setDraftMinutes(realMinutes);
       setRouteError(""); // 성공 시 에러 메시지 초기화
     } else {
       // API 실패 시 기존 추정 로직 사용
       const base =
-        Math.max(locations.start.trim().length, 3) + Math.max(locations.destination.trim().length, 3);
+        Math.max(locations.start.trim().length, 3) +
+        Math.max(locations.destination.trim().length, 3);
       const estimated = clampMinutes(15 + base * 1.6);
       setDraftMinutes(estimated);
     }
@@ -411,7 +414,9 @@ export default function HomePage() {
                     <p className="settings-title">
                       <NotebookPen size={14} aria-hidden /> Notion 연동
                     </p>
-                    <p className="settings-sub">Notion 페이지 ID를 입력하여 학습 자료로 가져오세요.</p>
+                    <p className="settings-sub">
+                      Notion 페이지 ID를 입력하여 학습 자료로 가져오세요.
+                    </p>
                     <div className="notion-input-group">
                       <input
                         type="text"
@@ -426,28 +431,33 @@ export default function HomePage() {
                           if (!notionPageId.trim()) return;
                           setIsLoadingNotion(true);
                           try {
-                            const response = await fetch(`/api/notion?pageId=${notionPageId.trim()}`);
+                            const response = await fetch(
+                              `/api/notion?pageId=${notionPageId.trim()}`
+                            );
                             if (response.ok) {
                               const data = await response.json();
                               alert(`성공적으로 가져왔습니다: ${data.title}`);
                             } else {
-                              alert('페이지를 가져올 수 없습니다. 페이지 ID와 권한을 확인해주세요.');
+                              alert(
+                                "페이지를 가져올 수 없습니다. 페이지 ID와 권한을 확인해주세요."
+                              );
                             }
                           } catch (error) {
-                            alert('연결 중 오류가 발생했습니다.');
+                            alert("연결 중 오류가 발생했습니다.");
                           } finally {
                             setIsLoadingNotion(false);
                           }
                         }}
                         disabled={!notionPageId.trim() || isLoadingNotion}
-                        className={`notion-test-btn ${isLoadingNotion ? 'loading' : ''}`}
+                        className={`notion-test-btn ${isLoadingNotion ? "loading" : ""}`}
                       >
-                        {isLoadingNotion ? '연결 중...' : '테스트'}
+                        {isLoadingNotion ? "연결 중..." : "테스트"}
                       </button>
                     </div>
                     <p className="settings-help">
                       💡 Notion 페이지 URL에서 마지막 32자리 ID를 복사하세요.
-                      <br />예: notion.so/workspace/페이지이름-<strong>32자리ID</strong>
+                      <br />
+                      예: notion.so/workspace/페이지이름-<strong>32자리ID</strong>
                     </p>
                   </div>
                 </div>
@@ -667,11 +677,11 @@ export default function HomePage() {
 
                     <button
                       type="button"
-                      className={`primary-button ${isCalculatingRoute ? 'loading' : ''}`}
+                      className={`primary-button ${isCalculatingRoute ? "loading" : ""}`}
                       onClick={calculateRouteMinutes}
                       disabled={isCalculatingRoute}
                     >
-                      {isCalculatingRoute ? '계산 중...' : '소요 시간 계산'}
+                      {isCalculatingRoute ? "계산 중..." : "소요 시간 계산"}
                     </button>
 
                     {routeError && (

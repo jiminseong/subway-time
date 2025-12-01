@@ -15,6 +15,14 @@
       "static/css/bfa20c5e20a083bd.css",
       "static/chunks/app/layout-0480a3adf1c6564a.js"
     ],
+    "/lecture/[slug]/page": [
+      "static/chunks/webpack-c81f7fd28659d64f.js",
+      "static/chunks/fd9d1056-b11b2651f33aae7f.js",
+      "static/chunks/117-744bf36b14dad30e.js",
+      "static/chunks/main-app-2966296019516b85.js",
+      "static/chunks/189-f2f3defe069041db.js",
+      "static/chunks/app/lecture/[slug]/page-95add612a38d035f.js"
+    ],
     "/page": [
       "static/chunks/webpack-c81f7fd28659d64f.js",
       "static/chunks/fd9d1056-b11b2651f33aae7f.js",
@@ -23,14 +31,6 @@
       "static/chunks/189-f2f3defe069041db.js",
       "static/chunks/924-1bf3deb299c8f7d0.js",
       "static/chunks/app/page-5c1e624debbd8e0c.js"
-    ],
-    "/lecture/[slug]/page": [
-      "static/chunks/webpack-c81f7fd28659d64f.js",
-      "static/chunks/fd9d1056-b11b2651f33aae7f.js",
-      "static/chunks/117-744bf36b14dad30e.js",
-      "static/chunks/main-app-2966296019516b85.js",
-      "static/chunks/189-f2f3defe069041db.js",
-      "static/chunks/app/lecture/[slug]/page-95add612a38d035f.js"
     ]
   }
 }

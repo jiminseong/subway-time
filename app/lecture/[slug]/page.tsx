@@ -44,7 +44,8 @@ const LECTURE_CONTENT: Record<string, LectureContent> = {
     source: "geeknews",
     sourceLabel: "GeekNews",
     title: "React 19에서 바뀌는 것들 정리",
-    summary: "올해 React 19 릴리즈에서 바뀌는 주요 포인트를 한 번에 정리한 글입니다. concurrent features, actions, form 처리 등 실제 업무에 영향을 줄 만한 내용을 빠르게 훑어볼 수 있어요.",
+    summary:
+      "올해 React 19 릴리즈에서 바뀌는 주요 포인트를 한 번에 정리한 글입니다. concurrent features, actions, form 처리 등 실제 업무에 영향을 줄 만한 내용을 빠르게 훑어볼 수 있어요.",
     estimatedMinutes: 7,
     tags: ["React", "업무연결"],
     url: "https://news.hada.io",
@@ -54,10 +55,10 @@ const LECTURE_CONTENT: Record<string, LectureContent> = {
         title: "주요 변경사항 개요",
         items: [
           "React Compiler 정식 출시",
-          "Server Components 안정화", 
+          "Server Components 안정화",
           "Concurrent Features 개선",
-          "Actions API 정식 도입"
-        ]
+          "Actions API 정식 도입",
+        ],
       },
       {
         type: "section",
@@ -66,8 +67,8 @@ const LECTURE_CONTENT: Record<string, LectureContent> = {
           "useActionState로 form 상태 관리 간소화",
           "Server Actions를 통한 데이터 변경",
           "Suspense boundary 개선",
-          "자동 최적화를 위한 컴파일러 활용"
-        ]
+          "자동 최적화를 위한 컴파일러 활용",
+        ],
       },
       {
         type: "code",
@@ -95,26 +96,27 @@ const [state, submitAction] = useActionState(async (prevState, formData) => {
   } catch (error) {
     return { error: error.message };
   }
-}, { success: false });`
+}, { success: false });`,
       },
       {
-        type: "section", 
+        type: "section",
         title: "마이그레이션 체크리스트",
         items: [
           "기존 form 핸들링 코드 점검",
           "Server Components 도입 계획 수립",
           "React Compiler 적용 준비",
-          "의존성 업데이트 일정 조율"
-        ]
-      }
-    ]
+          "의존성 업데이트 일정 조율",
+        ],
+      },
+    ],
   },
   "docs-1": {
     id: "docs-1",
     source: "docs",
     sourceLabel: "Docs",
     title: "React 공식 문서 - Thinking in React",
-    summary: "React 방식으로 컴포넌트를 쪼개고, 상태를 어디에 둘지 결정하는 과정을 단계별로 설명합니다. 실제로 지금 하고 있는 컴포넌트 구조를 떠올리면서 읽어보면 좋아요.",
+    summary:
+      "React 방식으로 컴포넌트를 쪼개고, 상태를 어디에 둘지 결정하는 과정을 단계별로 설명합니다. 실제로 지금 하고 있는 컴포넌트 구조를 떠올리면서 읽어보면 좋아요.",
     estimatedMinutes: 10,
     tags: ["React", "공식문서"],
     url: "https://react.dev/learn/thinking-in-react",
@@ -126,8 +128,8 @@ const [state, submitAction] = useActionState(async (prevState, formData) => {
           "단일 책임 원칙 적용하기",
           "정보 구조에 따라 컴포넌트 분리",
           "재사용성을 고려한 경계 설정",
-          "컴포넌트 이름 정하기"
-        ]
+          "컴포넌트 이름 정하기",
+        ],
       },
       {
         type: "section",
@@ -136,8 +138,8 @@ const [state, submitAction] = useActionState(async (prevState, formData) => {
           "상호작용 없이 UI만 렌더링",
           "props를 통한 데이터 전달",
           "state 사용하지 않기",
-          "하향식 vs 상향식 개발"
-        ]
+          "하향식 vs 상향식 개발",
+        ],
       },
       {
         type: "code",
@@ -180,7 +182,7 @@ function ProductTable({ products, filterText, inStockOnly }) {
       <tbody>{rows}</tbody>
     </table>
   );
-}`
+}`,
       },
       {
         type: "section",
@@ -189,8 +191,8 @@ function ProductTable({ products, filterText, inStockOnly }) {
           "시간이 지나도 변하지 않는다면 state가 아님",
           "props로 전달된다면 state가 아님",
           "기존 state나 props로 계산 가능하다면 state가 아님",
-          "DRY 원칙 적용하기"
-        ]
+          "DRY 원칙 적용하기",
+        ],
       },
       {
         type: "section",
@@ -199,17 +201,18 @@ function ProductTable({ products, filterText, inStockOnly }) {
           "해당 state를 기반으로 렌더링하는 모든 컴포넌트 찾기",
           "공통 부모 컴포넌트 찾기",
           "적절한 위치에 state 배치",
-          "필요시 새로운 컴포넌트 생성"
-        ]
-      }
-    ]
+          "필요시 새로운 컴포넌트 생성",
+        ],
+      },
+    ],
   },
   "notion-1": {
-    id: "notion-1", 
+    id: "notion-1",
     source: "notion",
     sourceLabel: "업무 로그",
     title: "최근 작업한 i18n 이슈 복습",
-    summary: "최근 Notion 업무일지에서 언급된 다국어(i18n) 관련 이슈를 기반으로, 다시 보면 좋을만한 레퍼런스와 체크리스트를 묶어둔 카드입니다. 다음 번 이슈 때 더 빠르게 대응할 수 있도록 돕습니다.",
+    summary:
+      "최근 Notion 업무일지에서 언급된 다국어(i18n) 관련 이슈를 기반으로, 다시 보면 좋을만한 레퍼런스와 체크리스트를 묶어둔 카드입니다. 다음 번 이슈 때 더 빠르게 대응할 수 있도록 돕습니다.",
     estimatedMinutes: 6,
     tags: ["i18n", "업무복습"],
     url: "https://notion.so/workspace",
@@ -221,8 +224,8 @@ function ProductTable({ products, filterText, inStockOnly }) {
           "한국어 폰트 깨짐 현상 (fallback 설정 누락)",
           "날짜 형식 locale 별 차이 처리",
           "RTL 언어 지원을 위한 CSS 수정",
-          "번역 키 네이밍 컨벤션 정리"
-        ]
+          "번역 키 네이밍 컨벤션 정리",
+        ],
       },
       {
         type: "section",
@@ -231,11 +234,11 @@ function ProductTable({ products, filterText, inStockOnly }) {
           "font-family에 적절한 fallback 추가",
           "Intl.DateTimeFormat 사용하여 날짜 포맷팅",
           "CSS logical properties로 방향성 대응",
-          "i18n 키는 feature.component.element 구조로 통일"
-        ]
+          "i18n 키는 feature.component.element 구조로 통일",
+        ],
       },
       {
-        type: "code", 
+        type: "code",
         title: "폰트 fallback 설정",
         content: `/* 개선 전 */
 .title {
@@ -250,7 +253,7 @@ function ProductTable({ products, filterText, inStockOnly }) {
     BlinkMacSystemFont, 
     system-ui, 
     sans-serif;
-}`
+}`,
       },
       {
         type: "code",
@@ -266,7 +269,7 @@ const formatDate = (date: Date, locale: string) => {
 
 // 사용 예시
 formatDate(new Date(), 'ko-KR'); // 2024년 12월 1일
-formatDate(new Date(), 'en-US'); // December 1, 2024`
+formatDate(new Date(), 'en-US'); // December 1, 2024`,
       },
       {
         type: "section",
@@ -275,17 +278,18 @@ formatDate(new Date(), 'en-US'); // December 1, 2024`
           "새로운 텍스트 추가 시 바로 i18n 키로 등록",
           "이미지나 아이콘에도 alt 텍스트 다국어 지원",
           "CSS에서 하드코딩된 width 값 확인",
-          "QA 단계에서 다른 언어로도 테스트"
-        ]
-      }
-    ]
+          "QA 단계에서 다른 언어로도 테스트",
+        ],
+      },
+    ],
   },
   "docs-2": {
     id: "docs-2",
-    source: "docs", 
+    source: "docs",
     sourceLabel: "Docs",
     title: "TypeScript Handbook - Generics 개념 잡기",
-    summary: "제네릭 타입의 기본 개념과 실제 코드에서 어떻게 사용하는지 예제로 설명합니다. 복잡한 유틸 타입을 읽을 때 막혔던 부분을 해소하는 데 도움이 됩니다.",
+    summary:
+      "제네릭 타입의 기본 개념과 실제 코드에서 어떻게 사용하는지 예제로 설명합니다. 복잡한 유틸 타입을 읽을 때 막혔던 부분을 해소하는 데 도움이 됩니다.",
     estimatedMinutes: 8,
     tags: ["TypeScript", "기초다지기"],
     url: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
@@ -297,8 +301,8 @@ formatDate(new Date(), 'en-US'); // December 1, 2024`
           "타입의 재사용성 확보",
           "any 타입 사용으로 인한 타입 안전성 손실 방지",
           "컴파일 타임 타입 체킹 활용",
-          "코드의 가독성과 유지보수성 향상"
-        ]
+          "코드의 가독성과 유지보수성 향상",
+        ],
       },
       {
         type: "code",
@@ -315,17 +319,17 @@ function identity<T>(arg: T): T {
 
 // 사용 예시
 let output = identity<string>("myString");  // 타입: string
-let output2 = identity("myString");         // 타입 추론: string`
+let output2 = identity("myString");         // 타입 추론: string`,
       },
       {
-        type: "section", 
+        type: "section",
         title: "제네릭 제약 조건 (Generic Constraints)",
         items: [
           "extends 키워드로 타입 제한",
           "keyof 연산자와 조합",
           "조건부 타입과의 연계",
-          "실용적인 제약 조건 패턴들"
-        ]
+          "실용적인 제약 조건 패턴들",
+        ],
       },
       {
         type: "code",
@@ -347,7 +351,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 
 let person = { name: "John", age: 30 };
 let name = getProperty(person, "name"); // 타입: string
-let age = getProperty(person, "age");   // 타입: number`
+let age = getProperty(person, "age");   // 타입: number`,
       },
       {
         type: "section",
@@ -355,9 +359,9 @@ let age = getProperty(person, "age");   // 타입: number`
         items: [
           "Promise<T>와 비동기 처리",
           "Array<T> 조작 함수들",
-          "React의 Component<Props> 타입", 
-          "API 응답 타입 정의"
-        ]
+          "React의 Component<Props> 타입",
+          "API 응답 타입 정의",
+        ],
       },
       {
         type: "code",
@@ -390,10 +394,10 @@ function List<T>({ items, onItemClick, renderItem }: ListProps<T>) {
       ))}
     </ul>
   );
-}`
-      }
-    ]
-  }
+}`,
+      },
+    ],
+  },
 };
 
 interface LecturePageProps {
@@ -438,11 +442,11 @@ export default function LecturePage({ params }: LecturePageProps) {
     );
   }
 
-  const elapsedTime = startTime 
+  const elapsedTime = startTime
     ? Math.floor((currentTime.getTime() - startTime.getTime()) / 1000 / 60)
     : 0;
 
-  const progress = completedSections.size / (lecture.content?.length || 1) * 100;
+  const progress = (completedSections.size / (lecture.content?.length || 1)) * 100;
 
   const toggleSection = (index: number) => {
     const newCompleted = new Set(completedSections);
@@ -456,10 +460,14 @@ export default function LecturePage({ params }: LecturePageProps) {
 
   const getSourceColor = (source: string) => {
     switch (source) {
-      case "geeknews": return "bg-orange-100 text-orange-800";
-      case "docs": return "bg-blue-100 text-blue-800"; 
-      case "notion": return "bg-purple-100 text-purple-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "geeknews":
+        return "bg-orange-100 text-orange-800";
+      case "docs":
+        return "bg-blue-100 text-blue-800";
+      case "notion":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -477,12 +485,18 @@ export default function LecturePage({ params }: LecturePageProps) {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-3">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSourceColor(lecture.source)}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${getSourceColor(
+                    lecture.source
+                  )}`}
+                >
                   {lecture.sourceLabel}
                 </span>
                 <div className="flex items-center gap-2 text-sm text-slate-600">
                   <Timer className="w-4 h-4" />
-                  <span>{elapsedTime}분 / {lecture.estimatedMinutes}분</span>
+                  <span>
+                    {elapsedTime}분 / {lecture.estimatedMinutes}분
+                  </span>
                 </div>
               </div>
             </div>
@@ -518,9 +532,7 @@ export default function LecturePage({ params }: LecturePageProps) {
                 />
               </div>
             </div>
-            <span className="text-sm text-slate-600 font-medium">
-              {Math.round(progress)}% 완료
-            </span>
+            <span className="text-sm text-slate-600 font-medium">{Math.round(progress)}% 완료</span>
           </div>
         </div>
       </div>
@@ -540,17 +552,12 @@ export default function LecturePage({ params }: LecturePageProps) {
               </span>
             ))}
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4 leading-tight">
-            {lecture.title}
-          </h1>
-          <p className="text-slate-600 text-lg leading-relaxed mb-6">
-            {lecture.summary}
-          </p>
+          <h1 className="text-3xl font-bold text-slate-900 mb-4 leading-tight">{lecture.title}</h1>
+          <p className="text-slate-600 text-lg leading-relaxed mb-6">{lecture.summary}</p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-slate-500">
               <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                약 {lecture.estimatedMinutes}분 소요
+                <Clock className="w-4 h-4" />약 {lecture.estimatedMinutes}분 소요
               </span>
               <span className="flex items-center gap-1">
                 <Target className="w-4 h-4" />
@@ -594,10 +601,8 @@ export default function LecturePage({ params }: LecturePageProps) {
                     )}
                   </button>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                      {section.title}
-                    </h3>
-                    
+                    <h3 className="text-xl font-semibold text-slate-900 mb-4">{section.title}</h3>
+
                     {section.type === "section" && section.items && (
                       <ul className="space-y-3">
                         {section.items.map((item, itemIndex) => (
@@ -608,7 +613,7 @@ export default function LecturePage({ params }: LecturePageProps) {
                         ))}
                       </ul>
                     )}
-                    
+
                     {section.type === "code" && section.content && (
                       <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
                         <pre className="text-slate-100 text-sm leading-relaxed">
