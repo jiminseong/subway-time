@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const origin = searchParams.get('origin');
     const destination = searchParams.get('destination');
     const mode = searchParams.get('mode') || 'transit'; // transit, driving, walking
@@ -87,7 +90,7 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching route data:', error);
     
     // 에러 발생 시 더미 데이터 반환
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const origin = searchParams.get('origin') || '출발지';
     const destination = searchParams.get('destination') || '도착지';
     const mode = searchParams.get('mode') || 'transit';

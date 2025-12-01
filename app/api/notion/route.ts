@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Force dynamic rendering for this route  
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const pageId = searchParams.get('pageId');
     const notionToken = process.env.NOTION_API_KEY;
 
