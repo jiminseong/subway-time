@@ -428,12 +428,12 @@ export default function LecturePage({ params }: LecturePageProps) {
 
   if (!lecture) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">강의를 찾을 수 없습니다</h1>
+      <div className="lecture-page">
+        <div className="lecture-error">
+          <h1 className="lecture-error-title">강의를 찾을 수 없습니다</h1>
           <button
             onClick={() => router.back()}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="lecture-error-btn"
           >
             ← 돌아가기
           </button>
@@ -458,41 +458,26 @@ export default function LecturePage({ params }: LecturePageProps) {
     setCompletedSections(newCompleted);
   };
 
-  const getSourceColor = (source: string) => {
-    switch (source) {
-      case "geeknews":
-        return "bg-orange-100 text-orange-800";
-      case "docs":
-        return "bg-blue-100 text-blue-800";
-      case "notion":
-        return "bg-purple-100 text-purple-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="lecture-page">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+      <div className="lecture-header">
+        <div className="lecture-header-content">
+          <div className="lecture-header-row">
+            <div className="lecture-nav">
               <button
                 onClick={() => router.back()}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className="lecture-back-btn"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
-              <div className="flex items-center gap-3">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${getSourceColor(
-                    lecture.source
-                  )}`}
-                >
+              <div className="lecture-meta">
+                <span className={`lecture-source lecture-source--${lecture.source}`}>
                   {lecture.sourceLabel}
                 </span>
-                <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="lecture-time">
                   <Timer className="w-4 h-4" />
                   <span>
                     {elapsedTime}분 / {lecture.estimatedMinutes}분
@@ -500,16 +485,14 @@ export default function LecturePage({ params }: LecturePageProps) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="lecture-actions">
               <button
                 onClick={() => setIsBookmarked(!isBookmarked)}
-                className={`p-2 rounded-lg transition-colors ${
-                  isBookmarked ? "bg-yellow-100 text-yellow-700" : "hover:bg-slate-100"
-                }`}
+                className={`lecture-action-btn ${isBookmarked ? 'lecture-action-btn--bookmarked' : ''}`}
               >
                 <Bookmark className={`w-5 h-5 ${isBookmarked ? "fill-current" : ""}`} />
               </button>
-              <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+              <button className="lecture-action-btn">
                 <Share className="w-5 h-5" />
               </button>
             </div>
@@ -518,13 +501,13 @@ export default function LecturePage({ params }: LecturePageProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 py-3">
-          <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <div className="w-full bg-slate-200 rounded-full h-2">
+      <div className="lecture-progress-bar">
+        <div className="lecture-progress-content">
+          <div className="lecture-progress-row">
+            <div className="lecture-progress-track-container">
+              <div className="lecture-progress-track">
                 <motion.div
-                  className="bg-blue-600 h-2 rounded-full"
+                  className="lecture-progress-fill"
                   style={{ width: `${progress}%` }}
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
@@ -532,34 +515,31 @@ export default function LecturePage({ params }: LecturePageProps) {
                 />
               </div>
             </div>
-            <span className="text-sm text-slate-600 font-medium">{Math.round(progress)}% 완료</span>
+            <span className="lecture-progress-text">{Math.round(progress)}% 완료</span>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="lecture-content">
         {/* Title Section */}
-        <div className="bg-white rounded-2xl p-8 mb-6 border border-slate-200">
-          <div className="flex flex-wrap gap-2 mb-4">
+        <div className="lecture-title-section">
+          <div className="lecture-tags">
             {lecture.tags?.map((tag) => (
-              <span
-                key={tag}
-                className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm"
-              >
+              <span key={tag} className="lecture-tag">
                 <Tag className="w-3 h-3" />
                 {tag}
               </span>
             ))}
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4 leading-tight">{lecture.title}</h1>
-          <p className="text-slate-600 text-lg leading-relaxed mb-6">{lecture.summary}</p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 text-sm text-slate-500">
-              <span className="flex items-center gap-1">
+          <h1 className="lecture-title">{lecture.title}</h1>
+          <p className="lecture-summary">{lecture.summary}</p>
+          <div className="lecture-info-row">
+            <div className="lecture-meta-info">
+              <span className="lecture-duration">
                 <Clock className="w-4 h-4" />약 {lecture.estimatedMinutes}분 소요
               </span>
-              <span className="flex items-center gap-1">
+              <span className="lecture-completion">
                 <Target className="w-4 h-4" />
                 {completedSections.size} / {lecture.content?.length || 0} 완료
               </span>
@@ -569,7 +549,7 @@ export default function LecturePage({ params }: LecturePageProps) {
                 href={lecture.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="lecture-external-link"
               >
                 원문 보기
                 <ExternalLink className="w-4 h-4" />
@@ -583,16 +563,16 @@ export default function LecturePage({ params }: LecturePageProps) {
           {lecture.content?.map((section, index) => (
             <motion.div
               key={index}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden"
+              className="lecture-section-card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className="p-6">
-                <div className="flex items-start gap-4">
+              <div className="lecture-section-content">
+                <div className="lecture-section-row">
                   <button
                     onClick={() => toggleSection(index)}
-                    className="mt-1 p-1 hover:bg-slate-100 rounded-full transition-colors"
+                    className="lecture-section-toggle"
                   >
                     {completedSections.has(index) ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
@@ -601,22 +581,22 @@ export default function LecturePage({ params }: LecturePageProps) {
                     )}
                   </button>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-slate-900 mb-4">{section.title}</h3>
+                    <h3 className="lecture-section-title">{section.title}</h3>
 
                     {section.type === "section" && section.items && (
-                      <ul className="space-y-3">
+                      <ul className="lecture-section-list">
                         {section.items.map((item, itemIndex) => (
-                          <li key={itemIndex} className="flex items-start gap-3">
-                            <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0" />
-                            <span className="text-slate-700 leading-relaxed">{item}</span>
+                          <li key={itemIndex}>
+                            <div className="lecture-section-bullet" />
+                            <span className="lecture-section-text">{item}</span>
                           </li>
                         ))}
                       </ul>
                     )}
 
                     {section.type === "code" && section.content && (
-                      <div className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
-                        <pre className="text-slate-100 text-sm leading-relaxed">
+                      <div className="lecture-code-block">
+                        <pre>
                           <code>{section.content}</code>
                         </pre>
                       </div>
@@ -631,18 +611,18 @@ export default function LecturePage({ params }: LecturePageProps) {
         {/* Completion */}
         {progress === 100 && (
           <motion.div
-            className="bg-green-50 border border-green-200 rounded-2xl p-6 mt-8 text-center"
+            className="lecture-completion-card"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
           >
             <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-green-900 mb-2">학습 완료!</h3>
-            <p className="text-green-700 mb-4">
+            <h3 className="lecture-completion-title">학습 완료!</h3>
+            <p className="lecture-completion-text">
               총 {elapsedTime}분 동안 학습하셨습니다. 수고하셨어요! 🎉
             </p>
             <button
               onClick={() => router.back()}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="lecture-completion-btn"
             >
               돌아가기
             </button>
