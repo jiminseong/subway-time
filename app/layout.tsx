@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   description:
     "지하철/버스 이동 시간을 지금의 나에게 맞는 프런트엔드 학습팩으로 채워주는 개인 학습 도구",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport = {
