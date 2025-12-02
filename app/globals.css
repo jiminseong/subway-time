@@ -517,6 +517,27 @@ input {
   font-size: 13px;
 }
 
+.sheet-hint--emphasis {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(120deg, rgba(77, 165, 255, 0.12), rgba(47, 122, 252, 0.08));
+  border: 1px solid rgba(77, 165, 255, 0.3);
+  color: #f1f5ff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sheet-hint__value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #9fd0ff;
+}
+
 .route-list {
   display: flex;
   flex-direction: column;
@@ -1122,13 +1143,18 @@ input {
   padding: 16px;
   overflow-x: auto;
   margin-top: 12px;
+  width: 100%;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .lecture-code-block pre {
   color: #e5e5e5;
   font-size: 13px;
   line-height: 1.5;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  white-space: pre;
+  margin: 0;
 }
 
 .lecture-completion-card {
@@ -1196,4 +1222,31 @@ input {
 
 .lecture-error-btn:hover {
   color: var(--primary-strong);
+}
+
+@media (max-width: 640px) {
+  .lecture-header-content,
+  .lecture-progress-content,
+  .lecture-content {
+    padding: 16px;
+  }
+
+  .lecture-section-row {
+    flex-direction: column;
+  }
+
+  .lecture-section-toggle {
+    align-self: flex-start;
+  }
+
+  .lecture-code-block {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .lecture-code-block pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 12px;
+  }
 }

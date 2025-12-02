@@ -89,6 +89,7 @@ export default function HomePage() {
   const [isLoadingNotion, setIsLoadingNotion] = useState(false);
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
   const [routeError, setRouteError] = useState("");
+  const [routeSuccess, setRouteSuccess] = useState(false);
 
   const packs = useMemo<LearningPack[]>(() => {
     return generateDummyPacks(availableMinutes);
@@ -151,8 +152,11 @@ export default function HomePage() {
     // 입력값이 없으면 기존 로직 사용
     if (!locations.start.trim() || !locations.destination.trim()) {
       setRouteError("출발지와 도착지를 입력해주세요.");
+      setRouteSuccess(false);
       return;
     }
+
+    setRouteSuccess(false);
 
     // 실제 API로 경로 시간 계산
     const realMinutes = await calculateRealRouteTime(locations.start, locations.destination);
@@ -160,6 +164,7 @@ export default function HomePage() {
     if (realMinutes !== null) {
       setDraftMinutes(realMinutes);
       setRouteError(""); // 성공 시 에러 메시지 초기화
+      setRouteSuccess(true);
     } else {
       // API 실패 시 기존 추정 로직 사용
       const base =
@@ -167,6 +172,7 @@ export default function HomePage() {
         Math.max(locations.destination.trim().length, 3);
       const estimated = clampMinutes(15 + base * 1.6);
       setDraftMinutes(estimated);
+      setRouteSuccess(false);
     }
   };
 
@@ -690,6 +696,12 @@ export default function HomePage() {
                       </div>
                     )}
 
+                    {routeSuccess && (
+                      <div className="route-success">
+                        <span>✅ 소요 시간 계산 완료</span>
+                      </div>
+                    )}
+
                     <div className="field">
                       <p className="field-label">자주 가는 경로</p>
                       <div className="route-list">
@@ -713,8 +725,9 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <p className="sheet-hint">
-                      예상 이동 시간: <strong>{draftMinutes}분</strong>
+                    <p className="sheet-hint sheet-hint--emphasis" aria-live="polite">
+                      <span>예상 이동 시간</span>
+                      <span className="sheet-hint__value">{draftMinutes}분</span>
                     </p>
                   </div>
                 )}

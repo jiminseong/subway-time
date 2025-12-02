@@ -431,10 +431,7 @@ export default function LecturePage({ params }: LecturePageProps) {
       <div className="lecture-page">
         <div className="lecture-error">
           <h1 className="lecture-error-title">강의를 찾을 수 없습니다</h1>
-          <button
-            onClick={() => router.back()}
-            className="lecture-error-btn"
-          >
+          <button onClick={() => router.back()} className="lecture-error-btn">
             ← 돌아가기
           </button>
         </div>
@@ -458,8 +455,6 @@ export default function LecturePage({ params }: LecturePageProps) {
     setCompletedSections(newCompleted);
   };
 
-
-
   return (
     <div className="lecture-page">
       {/* Header */}
@@ -467,10 +462,7 @@ export default function LecturePage({ params }: LecturePageProps) {
         <div className="lecture-header-content">
           <div className="lecture-header-row">
             <div className="lecture-nav">
-              <button
-                onClick={() => router.back()}
-                className="lecture-back-btn"
-              >
+              <button onClick={() => router.back()} className="lecture-back-btn">
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="lecture-meta">
@@ -488,7 +480,9 @@ export default function LecturePage({ params }: LecturePageProps) {
             <div className="lecture-actions">
               <button
                 onClick={() => setIsBookmarked(!isBookmarked)}
-                className={`lecture-action-btn ${isBookmarked ? 'lecture-action-btn--bookmarked' : ''}`}
+                className={`lecture-action-btn ${
+                  isBookmarked ? "lecture-action-btn--bookmarked" : ""
+                }`}
               >
                 <Bookmark className={`w-5 h-5 ${isBookmarked ? "fill-current" : ""}`} />
               </button>
@@ -570,10 +564,7 @@ export default function LecturePage({ params }: LecturePageProps) {
             >
               <div className="lecture-section-content">
                 <div className="lecture-section-row">
-                  <button
-                    onClick={() => toggleSection(index)}
-                    className="lecture-section-toggle"
-                  >
+                  <button onClick={() => toggleSection(index)} className="lecture-section-toggle">
                     {completedSections.has(index) ? (
                       <CheckCircle className="w-5 h-5 text-green-600" />
                     ) : (
@@ -620,10 +611,7 @@ export default function LecturePage({ params }: LecturePageProps) {
             <p className="lecture-completion-text">
               총 {elapsedTime}분 동안 학습하셨습니다. 수고하셨어요! 🎉
             </p>
-            <button
-              onClick={() => router.back()}
-              className="lecture-completion-btn"
-            >
+            <button onClick={() => router.back()} className="lecture-completion-btn">
               돌아가기
             </button>
           </motion.div>
